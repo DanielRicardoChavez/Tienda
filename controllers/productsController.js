@@ -1,5 +1,7 @@
+import { console } from "inspector";
 import masterModel from "../models/masterModel.js"
 import { validateInput } from "../utils/productsValidation.js";
+
 
 const MasterModel = new masterModel();
 class productControllers{
@@ -29,21 +31,26 @@ class productControllers{
 
         const {errors, s} = validateInput(nombre, precio, imagen, descripcion);
 
+
         if(errors.length > 0){
             return res.render('index/create', {
                 title: "Nuevo Producto",
                 errors,
                 product: {nombre, precio, imagen, descripcion}
             });
+
         }
 
         try {
+
             const productExist = await MasterModel.selectByField(
                 'productos',
                 'nombre',
                 nombre,
                 'nombre'
             );
+
+
 
             if(productExist.length > 0 && productExist[0].nombre){
                 errors.push({
@@ -52,7 +59,7 @@ class productControllers{
                 });
             }
 
-            console.log(errors)
+
             if(errors.length > 0){
                 return res.render('index/create', {
                     title: "Nuevo Producto",
@@ -60,6 +67,7 @@ class productControllers{
                     product: {nombre, precio, imagen , descripcion}
                 })
             }
+
 
             const result = await MasterModel.insertData(
                 'productos',
@@ -70,7 +78,7 @@ class productControllers{
                     descripcion: s.descripcion
 
                 }
-            )
+            );
 
             console.log((result));
             
@@ -79,10 +87,15 @@ class productControllers{
                 res.flash('El producto fue creado exitosamente')
                 return res.redirect('/');
             }else{
-                res.flash('Hubo un error al crear el producto')
+                const error = new Error('Hubo un error al crear el producto');
+                error.status = 500;
+                return next(error);
             }
 
+            console.log("holi");
+
         } catch (error) {
+            console.error('Error detallado: ', error)
             next(error)
         }
     }
@@ -204,14 +217,7 @@ class productControllers{
             );
 
             console.log(result)
-
-            if(result.affectedRows > 0){
-                res.flash('Success', 'El producto fue creado exitosamente');
-                return res.redirect('/');
-            }else{
-                res.flash('error', 'No se pudo crear el producto');
-                return res.redirect('/');
-            }
+            return res.redirect('/');
 
         } catch (error) {
             next(error)
@@ -259,19 +265,11 @@ class productControllers{
                 'productos',
                 'id',
                 idProduct
-            )
+            );
 
             console.log(deleteProduct)
 
-            if(deleteProduct.affectedRows > 0){
-                req.flash('success', 'El cliente fue creado correctamente');
-                return res.redirect('/');
-
-            }else{
-                res.flash('error', 'Hubo un error al eliminar el cliente');
-                return res.redirect('/');
-            }
-
+            return res.redirect('/');
 
         } catch (error) {
             next(error)

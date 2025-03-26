@@ -1,23 +1,70 @@
 extends /layout/layout
-
 block content
-  .container.mt-5
-    h2.text-center.mb-4 Productos Disponibles
+  .container.py-5
+    // Cabecera con título y filtros
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h2.mb-0
+        i.bi.bi-grid-3x3-gap.me-2
+        | Productos Disponibles
+      .d-flex.gap-2
+        select.form-select.form-select-sm(style="width: auto")
+          option(selected) Todos los productos
+          option Ropa
+          option Electrónica
+          option Hogar
+          option Deportes
+        select.form-select.form-select-sm(style="width: auto")
+          option(selected) Ordenar por
+          option Precio: menor a mayor
+          option Precio: mayor a menor
+          option Nombre: A-Z
+    
+    // Mostrar productos o mensaje de no disponible
     if productos && productos.length > 0
-      .row
+      .row.row-cols-1.row-cols-md-2.row-cols-lg-3.row-cols-xl-4.g-4
         each producto in productos  
-          .col-md-4.mb-4
-            .card
-              img.card-img-top(src=producto.imagen, alt=producto.nombre)
-              .card-body
-                h5.card-title= producto.nombre
-                p.card-text Precio: $ #{producto.precio}
-                .d-flex.justify-content-center.gap-1
-                  a.btn.btn-info.btn-sm(href=`/actualizar/${producto.id}`)
-                    i.bi.bi-pencil-square Editar
-                  form(action=`/delete/${producto.id}` method="POST" onsubmit="return confirm('¿Estas seguro de eliminar este producto?')")
+          .col
+            .card.h-100.border-0.shadow-sm.product-card.position-relative
+              if producto.estado === "agotado"
+                .badge.bg-danger.position-absolute.end-0.top-0.m-2 Agotado
+              else if producto.precio < 30
+                .badge.bg-success.position-absolute.end-0.top-0.m-2 Oferta
+              
+              .card-img-wrapper.overflow-hidden
+                img.card-img-top(src=producto.imagen, alt=producto.nombre, style="height: 220px; object-fit: cover")
+              
+              .card-body.d-flex.flex-column
+                h5.card-title.fw-bold= producto.nombre
+                p.card-text.text-secondary.small.mb-2= producto.descripcion || "Sin descripción disponible"
+                
+                .d-flex.justify-content-between.align-items-center.mt-auto
+                  .price-tag
+                    span.fw-bold.fs-5 €#{producto.precio}
+                    if producto.precioAnterior
+                      span.text-decoration-line-through.text-muted.ms-2.small €#{producto.precioAnterior}
+                  
+                  a.btn.btn-dark.btn-sm.rounded-circle(href="#" title="Añadir al carrito")
+                    i.bi.bi-cart-plus
+                
+              .card-footer.bg-white.border-top-0.d-flex.justify-content-between.p-2
+                a.text-secondary.small.text-decoration-none(href=`/detalles/${producto.id}`)
+                  i.bi.bi-eye.me-1
+                  | Ver detalles
+                
+                .admin-actions.small
+                  a.text-secondary.me-2(href=`/actualizar/${producto.id}` title="Editar")
+                    i.bi.bi-pencil-square
+                  form.d-inline(action=`/delete/${producto.id}` method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?')")
                     input(type="hidden" name="_method" value="DELETE")
-                    button.btn.btn-danger.btn-sm(type="submit")
-                      i.bi.bi-trash Eliminar
-    else 
-      .alert.alert-warning.text-center No hay productos disponibles.
+                    button.btn.btn-link.text-danger.p-0.m-0(type="submit" title="Eliminar" style="font-size: inherit")
+                      i.bi.bi-trash
+    else
+      .row.justify-content-center.my-5
+        .col-md-6
+          .alert.alert-light.text-center.border.py-5
+            i.bi.bi-exclamation-circle.fs-1.d-block.mb-3
+            h4.mb-3 No hay productos disponibles
+            p.text-muted Parece que aún no hay productos en nuestra tienda.
+            a.btn.btn-dark.mt-2(href="/crear")
+              i.bi.bi-plus-circle.me-2
+              | Agregar nuevo producto

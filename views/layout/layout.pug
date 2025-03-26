@@ -1,23 +1,84 @@
 doctype html
-html
+html(lang="es")
   head
     title= title
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
     link(rel="icon" type="image/x-icon" href="/public/images/favicon.ico")
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel="stylesheet", href="/icons/bootstrap-icons.css")
-  body
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    script(src="/javascripts/bootstrap.bundle.min.js" defer)
+  body.bg-light
+    // Navbar mejorado con colores blanco y negro
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
       .container
-        span.navbar-toggler-icon
-        a.navbar-brand(href="/") MiTienda
-        button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav")
-        #navbarNav.collapse.navbar-collapse.justify-content-center
-        ul.navbar-nav
-          li.nav-item
-            a.nav-link(href="/") Ver Productos
-          li.nav-item
-            a.nav-link(href="/crear") Crear Nuevo
-        d-flex
-          a.btn.btn-primary(href="/nuevoUsuario") Login
-block content
+        a.navbar-brand(href="/")
+          i.bi.bi-shop.me-2
+          | Mi Tienda
+        button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.me-auto.mb-2.mb-lg-0
+            li.nav-item
+              a.nav-link(href="/") 
+                i.bi.bi-grid.me-1
+                | Productos
+            li.nav-item
+              a.nav-link(href="/crear")
+                i.bi.bi-plus-circle.me-1
+                | Crear Nuevo
+            li.nav-item
+              a.nav-link(href="/categorias")
+                i.bi.bi-tags.me-1
+                | Categorías
+          .d-flex
+            a.btn.btn-outline-light.me-2(href="/login")
+              i.bi.bi-person.me-1
+              | Login
+            a.btn.btn-light(href="/carrito")
+              i.bi.bi-cart.me-1
+              span.badge.bg-dark.text-white 0
+
+    // Contenido principal
+    main.container.py-4
+      block content
+
+    // Footer
+    footer.bg-dark.text-white.py-4.mt-5
+      .container
+        .row
+          .col-md-4.mb-3
+            h5.mb-3 Mi Tienda
+            p.text-white-50 Tu tienda en línea de confianza para encontrar productos de calidad a los mejores precios.
+          .col-md-4.mb-3
+            h5.mb-3 Enlaces Rápidos
+            ul.list-unstyled
+              li.mb-2
+                a.text-decoration-none.text-light(href="/") Inicio
+              li.mb-2
+                a.text-decoration-none.text-light(href="/nosotros") Acerca de Nosotros
+              li.mb-2
+                a.text-decoration-none.text-light(href="/contacto") Contacto
+              li.mb-2
+                a.text-decoration-none.text-light(href="/ayuda") Ayuda y FAQ
+          .col-md-4.mb-3
+            h5.mb-3 Síguenos
+            .d-flex.gap-3
+              a.text-light.fs-4(href="#")
+                i.bi.bi-facebook
+              a.text-light.fs-4(href="#")
+                i.bi.bi-instagram
+              a.text-light.fs-4(href="#")
+                i.bi.bi-twitter
+              a.text-light.fs-4(href="#")
+                i.bi.bi-youtube
+        hr.my-4
+        .row
+          .col-md-6.text-center.text-md-start
+            p.small.text-white-50 &copy; 2025 MiTienda. Todos los derechos reservados.
+          .col-md-6.text-center.text-md-end
+            p.small
+              a.text-light.text-decoration-none(href="/privacidad") Política de Privacidad
+              span.mx-2.text-white-50 |
+              a.text-light.text-decoration-none(href="/terminos") Términos y Condiciones

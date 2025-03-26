@@ -1,26 +1,64 @@
 extends /layout/layout
-
 block content
- .container.mt-5
-      .row.justify-content-center
-        .col-md-6
-          .card
-            .card-header
-              h3.text-center Crea un nuevo producto
-            include ../partials/alerts
-            .card-body
-              form(action="/crear", method="POST")
-                .mb-3 
-                  label(for="nombre").form-label Nombre 
-                  input(type="text", name="nombre", id="nombre", class="form-control")
-                .mb-3
-                  label(for="descripcion").form-label Descripcion
-                  input(type="text", id="descripcion", name="descripcion" ).form-control
-                .mb-3
-                  label(for="precio").form-label Precio
-                  input(type="text", id="precio", name="precio").form-control
-                .mb-3 
-                  label(for="nombre").form-label Imagen 
-                  input(type="text", name="imagen", id="Imagen", class="form-control")
-                .d-grid
-                  button(type="submit", href="/").btn.btn-primary Crear
+  .container.py-5
+    .row.justify-content-center
+      .col-md-8.col-lg-7
+        .card.border-0.shadow-sm
+          .card-header.bg-dark.text-white.py-3
+            h3.text-center.mb-0
+              i.bi.bi-plus-circle.me-2
+              | Crear nuevo producto
+          
+          include ../partials/alerts
+          
+          .card-body.p-4
+            form(action="/crear", method="POST")
+              .row
+                .col-md-6.mb-3
+                  label(for="nombre").form-label.fw-bold Nombre del producto
+                  input(type="text", name="nombre", id="nombre", class="form-control", placeholder="Ej: Camiseta Premium", required)
+                
+                .col-md-6.mb-3
+                  label(for="precio").form-label.fw-bold Precio
+                  .input-group
+                    span.input-group-text €
+                    input(type="number", id="precio", name="precio", step="0.01", min="0", class="form-control", placeholder="Ej: 29.99", required)
+              
+              .mb-3
+                label(for="categoria").form-label.fw-bold Categoría
+                select(name="categoria", id="categoria", class="form-select")
+                  option(value="" selected disabled) Selecciona una categoría
+                  option(value="ropa") Ropa
+                  option(value="electronica") Electrónica
+                  option(value="hogar") Hogar
+                  option(value="deportes") Deportes
+                  option(value="otro") Otro
+              
+              .mb-3
+                label(for="descripcion").form-label.fw-bold Descripción
+                textarea(id="descripcion", name="descripcion", rows="4", class="form-control", placeholder="Describe las características del producto...").form-control
+              
+              .mb-3
+                label(for="imagen").form-label.fw-bold URL de la imagen
+                .input-group
+                  span.input-group-text
+                    i.bi.bi-image
+                  input(type="url", name="imagen", id="imagen", class="form-control", placeholder="https://ejemplo.com/imagen.jpg")
+              
+              .mb-3
+                label.fw-bold Estado de inventario
+                .d-flex.gap-4.mt-2
+                  .form-check
+                    input.form-check-input(type="radio", name="estado", id="disponible", value="disponible", checked)
+                    label.form-check-label(for="disponible") Disponible
+                  .form-check
+                    input.form-check-input(type="radio", name="estado", id="agotado", value="agotado")
+                    label.form-check-label(for="agotado") Agotado
+              
+              .d-grid.gap-2.mt-4
+                button(type="submit").btn.btn-dark.py-2
+                  i.bi.bi-save.me-2
+                  | Guardar producto
+                a(href="/").btn.btn-outline-secondary.py-2
+                  i.bi.bi-arrow-left.me-2
+                  | Volver a productos
