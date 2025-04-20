@@ -1,7 +1,44 @@
 pipeline{
     agent any
 
-    stages('Clonar repositorio'){
+    stages{
+
+        stage('Clonar el repoositorio'){
+            steps{
+                git 'https://github.com/DanielRicardoChavez/Tienda.git'
+            }
+        }
+
+        stage('Contruir y levantar contenedores'){
+            steps{
+                sh 'docker-compose down || true'
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Esperando para iniciar servicios'){
+            steps{
+                echo 'Esperando 15 segundos para iniciar servicios...'
+                sh 'sleep 15'
+            }
+        }
+
+        stage('Probando Endpoints'){
+            steps{
+                echo 'Probando app en el puerto 3000'
+                sh 'curl -f http://localhost:3000/ || exit 1'
+
+                echo 'Probando app en el puerto 4000'
+                sh 'curl -f http://localhost:4000/ || exit 1'
+            }
+        }
+
+        stage('Apagando Contenedores'){
+            steps{
+                sh 'docker-compose down'
+            }
+        }
 
     }
 }
