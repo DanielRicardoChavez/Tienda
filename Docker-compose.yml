@@ -15,6 +15,7 @@ services:
       - db_data:/var/lib/mysql
   
   app:
+    build: .
     image: tienda-app:latest
     container_name: mi_app
     restart: always
