@@ -14,8 +14,8 @@ pipeline {
 
         stage('Esperar inicio de servicios') {
             steps {
-                echo '⏳ Esperando 60 segundos para que los servicios arranquen...'
-                sh 'sleep 60'
+                echo '⏳ Esperando 10 segundos para que los servicios arranquen...'
+                sh 'sleep 10'
             }
         }
     }
