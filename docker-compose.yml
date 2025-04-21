@@ -13,6 +13,7 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
   
   app:
     build: .
@@ -53,5 +54,5 @@ services:
     command: ["npm", "start"]
 
 volumes:
-  - db_data:
-  - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+  db_data:
+ 
