@@ -1,0 +1,4 @@
+FROM mysql:8
+ENV MYSQL_ROOT_PASSWORD=1831
+ENV MYSQL_DATABASE=tienda
+COPY docker-entrypoint-initdb.d /docker-entrypoint-initdb.d

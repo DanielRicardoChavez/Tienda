@@ -8,12 +8,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "1831"
       MYSQL_DATABASE: "tienda"
-      MYSQL_PASSWORD: "1831"
     ports:
       - "3307:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
   
   app:
     build: .

@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS productos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  precio INT NOT NULL,
+  imagen VARCHAR(160),
+  descripcion VARCHAR(90)
+);
