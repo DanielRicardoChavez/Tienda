@@ -50,9 +50,8 @@ services:
       DB_CONNECTION_LIMIT: "10"
       PORT: "3000"
       SESSION_SECRET: "0d2501883e47e4f5b177514ba874e31e15e8aa72ca15668130ffbef045f1216b"
-    volumes:
-      - .:/app
     command: ["npm", "start"]
 
 volumes:
-  db_data:
+  - db_data:
+  - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
