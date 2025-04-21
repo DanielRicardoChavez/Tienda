@@ -2,37 +2,37 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Contruir y levantar contenedores') {
+        stage('Construir y levantar contenedores') {
             steps {
+                echo '🛠️ Construyendo y levantando contenedores...'
                 sh 'docker-compose down || true'
                 sh 'docker-compose build'
                 sh 'docker-compose up -d'
             }
         }
 
-        stage('Esperando para iniciar servicios') {
+        stage('Esperar inicio de servicios') {
             steps {
-                echo 'Esperando 15 segundos para iniciar servicios...'
+                echo '⏳ Esperando 15 segundos para que los servicios arranquen...'
                 sh 'sleep 15'
             }
         }
 
-        stage('Probando Endpoints') {
+        stage('Probar Endpoints') {
             steps {
-                echo 'Probando app en el puerto 3000'
+                echo '🔍 Probando aplicación en puerto 3000'
                 sh 'curl -f http://localhost:3000/ || exit 1'
 
-                echo 'Probando app en el puerto 4000'
+                echo '🔍 Probando aplicación en puerto 4000'
                 sh 'curl -f http://localhost:4000/ || exit 1'
             }
         }
 
-        stage('Apagando Contenedores') {
+        stage('Apagar contenedores') {
             steps {
+                echo '🧹 Apagando contenedores...'
                 sh 'docker-compose down'
             }
         }
-
     }
 }
