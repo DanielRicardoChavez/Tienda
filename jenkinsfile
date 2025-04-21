@@ -2,46 +2,37 @@ pipeline {
     agent any
 
     stages {
-        stage('Clonar repositorio') {
+
+        stage('Contruir y levantar contenedores') {
             steps {
-                // Jenkins ya clona el repositorio automáticamente en el workspace
-                echo 'Repositorio clonado en el workspace.'
+                sh 'docker-compose down || true'
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
             }
         }
 
-        stage('Construir y levantar contenedores') {
+        stage('Esperando para iniciar servicios') {
             steps {
-                dir("${env.WORKSPACE}") {
-                    sh 'docker-compose -f docker-compose.yml down || true'
-                    sh 'docker-compose -f docker-compose.yml build'
-                    sh 'docker-compose -f docker-compose.yml up -d'
-                }
-            }
-        }
-
-        stage('Esperar inicio de servicios') {
-            steps {
-                echo 'Esperando 15 segundos para que los servicios se inicien...'
+                echo 'Esperando 15 segundos para iniciar servicios...'
                 sh 'sleep 15'
             }
         }
 
-        stage('Probar Endpoints') {
+        stage('Probando Endpoints') {
             steps {
-                echo 'Probando la aplicación en el puerto 3000'
+                echo 'Probando app en el puerto 3000'
                 sh 'curl -f http://localhost:3000/ || exit 1'
 
-                echo 'Probando la aplicación en el puerto 4000'
+                echo 'Probando app en el puerto 4000'
                 sh 'curl -f http://localhost:4000/ || exit 1'
             }
         }
 
-        stage('Apagar contenedores') {
+        stage('Apagando Contenedores') {
             steps {
-                dir("${env.WORKSPACE}") {
-                    sh 'docker-compose -f docker-compose.yml down'
-                }
+                sh 'docker-compose down'
             }
         }
+
     }
 }
