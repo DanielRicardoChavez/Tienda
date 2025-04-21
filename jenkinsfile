@@ -12,9 +12,9 @@ pipeline {
         stage('Construir y levantar contenedores') {
             steps {
                 dir("${env.WORKSPACE}") {
-                    sh 'docker-compose down || true'
-                    sh 'docker-compose build'
-                    sh 'docker-compose up -d'
+                    sh 'docker-compose -f docker-compose.yml down || true'
+                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
         stage('Apagar contenedores') {
             steps {
                 dir("${env.WORKSPACE}") {
-                    sh 'docker-compose down'
+                    sh 'docker-compose -f docker-compose.yml down'
                 }
             }
         }
