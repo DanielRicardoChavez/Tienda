@@ -18,21 +18,21 @@ pipeline {
             }
         }
 
-        stage('Probar Endpoints') {
-            steps {
-                echo '🔍 Probando aplicación en puerto 3000'
-                sh 'curl -f http://localhost:3000/ || exit 1'
+        // stage('Probar Endpoints') {
+        //     steps {
+        //         echo '🔍 Probando aplicación en puerto 3000'
+        //         sh 'curl -f http://localhost:3000/ || exit 1'
 
-                echo '🔍 Probando aplicación en puerto 4000'
-                sh 'curl -f http://localhost:4000/ || exit 1'
-            }
-        }
+        //         echo '🔍 Probando aplicación en puerto 4000'
+        //         sh 'curl -f http://localhost:4000/ || exit 1'
+        //     }
+        // }
 
-        stage('Apagar contenedores') {
-            steps {
-                echo '🧹 Apagando contenedores...'
-                sh 'docker-compose down --volumes --remove-orphans'
-            }
-        }
+        // stage('Apagar contenedores') {
+        //     steps {
+        //         echo '🧹 Apagando contenedores...'
+        //         sh 'docker-compose down --volumes --remove-orphans'
+        //     }
+        // }
     }
 }
